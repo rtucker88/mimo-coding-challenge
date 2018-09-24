@@ -1,0 +1,213 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lesson renders correctly with inputs 1`] = `
+<BrowserRouter>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <withStateHandlers(Lesson)
+      completeLesson={[MockFunction]}
+      lesson={
+        Object {
+          "content": Array [
+            Object {
+              "color": "#FFF",
+              "text": "var number =",
+            },
+          ],
+          "id": 1,
+          "input": Object {
+            "endIndex": 2,
+            "startIndex": 1,
+          },
+        }
+      }
+      nextLesson={2}
+    >
+      <Lesson
+        completeLesson={[MockFunction]}
+        isLessonFinished={false}
+        lesson={
+          Object {
+            "content": Array [
+              Object {
+                "color": "#FFF",
+                "text": "var number =",
+              },
+            ],
+            "id": 1,
+            "input": Object {
+              "endIndex": 2,
+              "startIndex": 1,
+            },
+          }
+        }
+        nextLesson={2}
+        onInputChange={[Function]}
+      >
+        <div>
+          <span
+            key="0-before"
+            style={
+              Object {
+                "color": "#FFF",
+              }
+            }
+          >
+            v
+          </span>
+          <input
+            key="0"
+            maxLength={1}
+            onChange={[Function]}
+            style={
+              Object {
+                "color": "#FFF",
+              }
+            }
+          />
+          <span
+            key="0-after"
+            style={
+              Object {
+                "color": "#FFF",
+              }
+            }
+          >
+            r number =
+          </span>
+          <Link
+            className="disabled-link"
+            replace={false}
+            to="/2"
+          >
+            <a
+              className="disabled-link"
+              href="/2"
+              onClick={[Function]}
+            >
+              <button
+                disabled={true}
+                onClick={[MockFunction]}
+              >
+                Continue
+              </button>
+            </a>
+          </Link>
+        </div>
+      </Lesson>
+    </withStateHandlers(Lesson)>
+  </Router>
+</BrowserRouter>
+`;
+
+exports[`Lesson renders correctly without inputs 1`] = `
+<BrowserRouter>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <withStateHandlers(Lesson)
+      completeLesson={[MockFunction]}
+      lesson={
+        Object {
+          "content": Array [
+            Object {
+              "color": "#FFF",
+              "text": "var number =",
+            },
+          ],
+          "id": 1,
+        }
+      }
+      nextLesson={2}
+    >
+      <Lesson
+        completeLesson={[MockFunction]}
+        isLessonFinished={true}
+        lesson={
+          Object {
+            "content": Array [
+              Object {
+                "color": "#FFF",
+                "text": "var number =",
+              },
+            ],
+            "id": 1,
+          }
+        }
+        nextLesson={2}
+        onInputChange={[Function]}
+      >
+        <div>
+          <span
+            key="0"
+            style={
+              Object {
+                "color": "#FFF",
+              }
+            }
+          >
+            var number =
+          </span>
+          <Link
+            className=""
+            replace={false}
+            to="/2"
+          >
+            <a
+              className=""
+              href="/2"
+              onClick={[Function]}
+            >
+              <button
+                disabled={false}
+                onClick={[MockFunction]}
+              >
+                Continue
+              </button>
+            </a>
+          </Link>
+        </div>
+      </Lesson>
+    </withStateHandlers(Lesson)>
+  </Router>
+</BrowserRouter>
+`;

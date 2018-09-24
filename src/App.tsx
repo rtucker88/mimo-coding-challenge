@@ -1,8 +1,15 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom';
-import Lesson from './Lesson';
-import { saveCompletedLesson } from './services/database';
+
+import { ILessonCompletion } from './services/database';
 import { getLessons, ILesson } from './services/lesson';
+
+import Done from './Done';
+import Lesson from './Lesson';
+
+interface IAppProps {
+  saveLesson: (lesson: ILessonCompletion) => Promise<any>;
+}
 
 interface IAppState {
   currentLesson: number | 'DONE';
@@ -10,11 +17,11 @@ interface IAppState {
   lessons: ILesson[];
 }
 
-class App extends React.Component<{}, IAppState> {
+class App extends React.Component<IAppProps, IAppState> {
   // Keep this out of state since it's in no-way tied to rendering or updating
   private currentLessonStart: string;
 
-  constructor(props: {}) {
+  constructor(props: IAppProps) {
     super(props);
 
     this.state = {
@@ -24,18 +31,17 @@ class App extends React.Component<{}, IAppState> {
     };
   }
 
-  public componentWillMount() {
+  public async componentDidMount() {
     // Assuming we always start at the first lesson and aren't trying to "continue from the last lesson"
-    getLessons()
-      .then(lessons => {
-        this.setState({
-          currentLesson: lessons[0].id,
-          isLoading: false,
-          lessons,
-        });
+    const lessons = await getLessons();
+  
+    this.setState({
+      currentLesson: lessons[0].id,
+      isLoading: false,
+      lessons,
+    });
 
-        this.currentLessonStart = Date.now().toString();
-      })
+    this.currentLessonStart = Date.now().toString();
   }
 
   public render() {
@@ -43,13 +49,11 @@ class App extends React.Component<{}, IAppState> {
 
     return (
       <Router>
-        <div>
-          <Switch>
-            <Route path="/done" exact={true} component={Done} />
-            <Route path="/:id" render={this.renderLesson} />
-            { !isLoading ? <Redirect to={`/${lessons[0].id}`} /> : null } 
-          </Switch>
-        </div>
+        <Switch>
+          <Route path="/done" exact={true} component={Done} />
+          <Route path="/:id" render={this.renderLesson} />
+          { !isLoading ? <Redirect to={`/${lessons[0].id}`} /> : null } 
+        </Switch>
       </Router>
     );
   }
@@ -58,7 +62,8 @@ class App extends React.Component<{}, IAppState> {
     const { lessons } = this.state;
     const lesson = lessons.find(lsn => lsn.id === parseInt(match.params.id, 10));
 
-    return lesson ? (<Lesson lesson={lesson} key={lesson.id} nextLesson={this.getNextLesson(lesson.id)} completeLesson={this.completeLesson(lesson.id)} />) : null;
+    // This conditional deals with a sane default for the loading state
+    return lesson ? (<Lesson lesson={lesson} key={lesson.id} nextLesson={this.getNextLesson(lesson.id)} completeLesson={this.completeLesson} />) : null;
   }
 
   private getNextLesson = (id: number) => {
@@ -68,20 +73,19 @@ class App extends React.Component<{}, IAppState> {
     return currentIndex !== lessons.length - 1 ? lessons[currentIndex + 1].id : 'DONE'
   };
 
-  private completeLesson = (id: number) => () => {
+  private completeLesson = async () => {
     // Unhandled error case here, if an error would result when adding to the DB
-    saveCompletedLesson({
+    await this.props.saveLesson({
       end: Date.now().toString(),
-      id,
+      id: this.state.currentLesson as number,
       start: this.currentLessonStart,
-    }).then(() => {
-      this.currentLessonStart = Date.now().toString();
     });
-  }
-}
+    this.currentLessonStart = Date.now().toString();
 
-const Done: React.StatelessComponent<{}> = () => {
-  return (<div>Done</div>);
+    this.setState((prevState) => ({
+      currentLesson: this.getNextLesson(prevState.currentLesson as number),
+    }));
+  }
 }
 
 export default App;

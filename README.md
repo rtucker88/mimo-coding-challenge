@@ -1,6 +1,5 @@
 A React Implementation of the [Mimo Frontend Coding Challenge](https://github.com/getmimo/coding-challenge/blob/master/frontend-challenge.md)
 
-
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>

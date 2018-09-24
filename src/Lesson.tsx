@@ -31,7 +31,7 @@ export const enhance = withStateHandlers<ILessonState, ILessonStateHandlers, ILe
     }
 });
 
-type CombinedLessonProps = ILessonProps & ILessonState & ILessonStateHandlers;
+export type CombinedLessonProps = ILessonProps & ILessonState & ILessonStateHandlers;
 
 const Lesson: React.StatelessComponent<CombinedLessonProps> = ({ lesson, nextLesson, completeLesson, onInputChange, isLessonFinished }) => {
     return (<div>
@@ -42,13 +42,13 @@ const Lesson: React.StatelessComponent<CombinedLessonProps> = ({ lesson, nextLes
 
 export default enhance(Lesson);
 
-function getSolutionValue({ content, input }: ILesson): string | null {
-    return input ? content.map(cnt => cnt.text).join('').substr(input.startIndex, input.endIndex - input.startIndex) : null;
+export function getSolutionValue({ content, input }: ILesson): string {
+    return content.map(cnt => cnt.text).join('').substr(input!.startIndex, input!.endIndex - input!.startIndex);
 }
 
 // Assuming valid data when going through this process. The error cases quickly result in a broken UI and 
 // I'm unsure how we would recover from that state
-export function createLesson(lesson: ILesson, onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => Partial<ILessonState> | undefined) {
+function createLesson(lesson: ILesson, onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => Partial<ILessonState> | undefined) {
     let textCounter = 0; // Use this to figure out where we replace text with an input
     
     const elems = lesson.content.map(entry => {

@@ -17,6 +17,7 @@ function init() {
     };    
 }
 
+// Right now we're keyed on the id, so going through the flow a second time without clearing the DB will throw an error
 export function saveCompletedLesson(completedLesson: ILessonCompletion) {
     const request = window.indexedDB.open(dbName, 2);
 
